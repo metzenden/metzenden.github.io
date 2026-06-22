@@ -283,7 +283,7 @@
     background:var(--panel);
     border:1px solid var(--line-soft);
     border-left:3px solid var(--stamp);
-    padding:24px 26px;
+    padding:24px 20px;
   }
   .app-card-head{ margin-bottom:6px; }
   .app-tag{
@@ -319,9 +319,10 @@
   }
   .shots-grid{
     display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:12px;
+    grid-template-columns:repeat(2, minmax(0, 1fr));
+    gap:14px;
     margin-top:18px;
+    width:100%;
   }
   @media (max-width:480px){ .shots-grid{ grid-template-columns:1fr; } }
 
@@ -333,6 +334,9 @@
     align-items:center;
     justify-content:center;
     gap:10px;
+    margin:0;
+    min-width:0;
+    width:100%;
   }
   .shot-placeholder .plus{ width:20px; height:20px; position:relative; }
   .shot-placeholder .plus::before, .shot-placeholder .plus::after{
@@ -355,11 +359,16 @@
     aspect-ratio:16/10;
     border:1px solid var(--line-soft);
     overflow:hidden;
+    margin:0;
+    min-width:0;
+    width:100%;
+    background:var(--panel-alt);
   }
   .shot img{
     width:100%;
     height:100%;
-    object-fit:cover;
+    max-width:100%;
+    object-fit:contain;
     display:block;
   }
 
@@ -749,96 +758,50 @@
   </section>
 
   <section class="portfolio">
-    <p class="eyebrow">Portfolio — applications réalisées</p>
-    <div class="note-box">
-      <span class="note-label">NOTE —</span>remplacez chaque bloc en pointillés par votre capture d'écran (balise &lt;figure class="shot"&gt;&lt;img src="..."&gt;&lt;/figure&gt;), et le texte en italique par le nom et la description réels de chaque application.
-    </div>
+    <p class="eyebrow">Portfolio — Appercu de certaines applications réalisées</p>
     <div class="portfolio-grid">
 
       <article class="app-card">
         <div class="app-card-head">
-          <span class="app-tag">APP. 01</span>
-          <h3>Nom de l'application 01</h3>
-          <div class="app-desc">Description courte de l'application en une phrase.</div>
+          <span class="app-tag">Application de Gestion des protocoles et des accords de siège</span>
+          <h3>AGPAS</h3>
+          <div class="app-desc">Application de Gestion des protocoles et des accords de siège pour la BCEAO</div>
         </div>
         <div class="shots-grid">
-          <figure class="shot-placeholder"><span class="plus"></span><span class="label">Capture 01</span></figure>
-          <figure class="shot-placeholder"><span class="plus"></span><span class="label">Capture 02</span></figure>
-          <figure class="shot-placeholder"><span class="plus"></span><span class="label">Capture 03</span></figure>
-          <figure class="shot-placeholder"><span class="plus"></span><span class="label">Capture 04</span></figure>
+          <figure class="shot"><img src="mes%20apps/1.png" alt="AGPAS — écran de connexion" loading="lazy"></figure>
+          <figure class="shot"><img src="mes%20apps/2.png" alt="AGPAS — liste des demandes d'accueil" loading="lazy"></figure>
+          <figure class="shot"><img src="mes%20apps/3.png" alt="AGPAS — gestion des demandes" loading="lazy"></figure>
+          <figure class="shot"><img src="mes%20apps/4.png" alt="AGPAS — détail d'une demande" loading="lazy"></figure>
         </div>
       </article>
 
       <article class="app-card">
         <div class="app-card-head">
-          <span class="app-tag">APP. 02</span>
-          <h3>Nom de l'application 02</h3>
-          <div class="app-desc">Description courte de l'application en une phrase.</div>
+          <span class="app-tag">Site vitrine &amp; administration</span>
+          <h3>Nabou Traiteur</h3>
+          <div class="app-desc">Plateforme web de restauration avec menu hebdomadaire et espace d'administration</div>
         </div>
         <div class="shots-grid">
-          <figure class="shot-placeholder"><span class="plus"></span><span class="label">Capture 01</span></figure>
-          <figure class="shot-placeholder"><span class="plus"></span><span class="label">Capture 02</span></figure>
-          <figure class="shot-placeholder"><span class="plus"></span><span class="label">Capture 03</span></figure>
-          <figure class="shot-placeholder"><span class="plus"></span><span class="label">Capture 04</span></figure>
+          <figure class="shot"><img src="mes%20apps/nabou1.png" alt="Nabou Traiteur — connexion administration" loading="lazy"></figure>
+          <figure class="shot"><img src="mes%20apps/nabou2.png" alt="Nabou Traiteur — menu de la semaine" loading="lazy"></figure>
+          <figure class="shot"><img src="mes%20apps/nabou3.png" alt="Nabou Traiteur — gestion des plats" loading="lazy"></figure>
+          <figure class="shot"><img src="mes%20apps/nabou4.png" alt="Nabou Traiteur — tableau de bord admin" loading="lazy"></figure>
         </div>
       </article>
 
       <article class="app-card">
         <div class="app-card-head">
-          <span class="app-tag">APP. 03</span>
-          <h3>Nom de l'application 03</h3>
-          <div class="app-desc">Description courte de l'application en une phrase.</div>
+          <span class="app-tag">Plateforme de coaching &amp; suivi</span>
+          <h3>LMS — Gestion des alertes</h3>
+          <div class="app-desc">Application de suivi des agents, profils de performance et traitement des alertes de coaching</div>
         </div>
         <div class="shots-grid">
-          <figure class="shot-placeholder"><span class="plus"></span><span class="label">Capture 01</span></figure>
-          <figure class="shot-placeholder"><span class="plus"></span><span class="label">Capture 02</span></figure>
-          <figure class="shot-placeholder"><span class="plus"></span><span class="label">Capture 03</span></figure>
-          <figure class="shot-placeholder"><span class="plus"></span><span class="label">Capture 04</span></figure>
+          <figure class="shot"><img src="mes%20apps/lms2.png" alt="LMS — gestion des alertes" loading="lazy"></figure>
+          <figure class="shot"><img src="mes%20apps/lms22.png" alt="LMS — profils agents" loading="lazy"></figure>
+          <figure class="shot"><img src="mes%20apps/lms33.png" alt="LMS — espace de suivi" loading="lazy"></figure>
+          <figure class="shot"><img src="mes%20apps/lms44.png" alt="LMS — détail agent" loading="lazy"></figure>
         </div>
       </article>
-
-      <article class="app-card">
-        <div class="app-card-head">
-          <span class="app-tag">APP. 04</span>
-          <h3>Nom de l'application 04</h3>
-          <div class="app-desc">Description courte de l'application en une phrase.</div>
-        </div>
-        <div class="shots-grid">
-          <figure class="shot-placeholder"><span class="plus"></span><span class="label">Capture 01</span></figure>
-          <figure class="shot-placeholder"><span class="plus"></span><span class="label">Capture 02</span></figure>
-          <figure class="shot-placeholder"><span class="plus"></span><span class="label">Capture 03</span></figure>
-          <figure class="shot-placeholder"><span class="plus"></span><span class="label">Capture 04</span></figure>
-        </div>
-      </article>
-
-      <article class="app-card">
-        <div class="app-card-head">
-          <span class="app-tag">APP. 05</span>
-          <h3>Nom de l'application 05</h3>
-          <div class="app-desc">Description courte de l'application en une phrase.</div>
-        </div>
-        <div class="shots-grid">
-          <figure class="shot-placeholder"><span class="plus"></span><span class="label">Capture 01</span></figure>
-          <figure class="shot-placeholder"><span class="plus"></span><span class="label">Capture 02</span></figure>
-          <figure class="shot-placeholder"><span class="plus"></span><span class="label">Capture 03</span></figure>
-          <figure class="shot-placeholder"><span class="plus"></span><span class="label">Capture 04</span></figure>
-        </div>
-      </article>
-
-      <article class="app-card">
-        <div class="app-card-head">
-          <span class="app-tag">APP. 06</span>
-          <h3>Nom de l'application 06</h3>
-          <div class="app-desc">Description courte de l'application en une phrase.</div>
-        </div>
-        <div class="shots-grid">
-          <figure class="shot-placeholder"><span class="plus"></span><span class="label">Capture 01</span></figure>
-          <figure class="shot-placeholder"><span class="plus"></span><span class="label">Capture 02</span></figure>
-          <figure class="shot-placeholder"><span class="plus"></span><span class="label">Capture 03</span></figure>
-          <figure class="shot-placeholder"><span class="plus"></span><span class="label">Capture 04</span></figure>
-        </div>
-      </article>
-
     </div>
   </section>
 
