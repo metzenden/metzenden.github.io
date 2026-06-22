@@ -1,11 +1,916 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>Mon Portfolio</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mouhamed Sylla — Dossier technique</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0f231a;
+    --panel:#15301f;
+    --panel-alt:#1b3a26;
+    --line:#c9974a;
+    --line-soft:rgba(201,151,74,.24);
+    --line-faint:rgba(201,151,74,.10);
+    --text:#eef3ea;
+    --text-dim:#9fc2a8;
+    --accent:#8fd14f;
+    --stamp:#e0883f;
+    --mono:'IBM Plex Mono', monospace;
+    --display:'Space Grotesk', sans-serif;
+    --body:'Inter', sans-serif;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} }
+
+  body{
+    margin:0;
+    background-color:var(--bg);
+    background-image:
+      linear-gradient(var(--line-faint) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line-faint) 1px, transparent 1px);
+    background-size:28px 28px;
+    color:var(--text);
+    font-family:var(--body);
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  a{color:var(--accent);}
+  a:focus-visible, button:focus-visible{outline:2px solid var(--stamp); outline-offset:3px;}
+
+  .sheet{
+    max-width:880px;
+    margin:48px auto;
+    padding:0 20px 80px;
+    position:relative;
+  }
+
+  /* corner registration marks, like a printed technical drawing */
+  .sheet::before, .sheet::after,
+  .sheet .crop-bl, .sheet .crop-br{
+    content:"";
+    position:absolute;
+    width:18px; height:18px;
+    border:1px solid var(--line);
+    opacity:.55;
+  }
+  .sheet::before{ top:0; left:6px; border-right:none; border-bottom:none; }
+  .sheet::after{ top:0; right:6px; border-left:none; border-bottom:none; }
+  .sheet .crop-bl{ bottom:40px; left:6px; border-right:none; border-top:none; }
+  .sheet .crop-br{ bottom:40px; right:6px; border-left:none; border-top:none; }
+
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--text-dim);
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin:0 0 14px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:22px; height:1px;
+    background:var(--line);
+    display:inline-block;
+  }
+
+  h1,h2,h3{ font-family:var(--display); margin:0; font-weight:700; }
+
+  section{ margin-top:52px; }
+
+  .panel{
+    background:var(--panel);
+    border:1px solid var(--line-soft);
+    padding:26px 28px;
+  }
+
+  /* ---------- title block ---------- */
+  .titleblock{
+    margin-top:30px;
+    border:1px solid var(--line);
+  }
+  .tb-main{
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:18px;
+    padding:26px 28px;
+    border-bottom:1px solid var(--line-soft);
+    align-items:end;
+  }
+  .tb-name{ font-size:clamp(28px,5vw,42px); letter-spacing:-.01em; }
+  .tb-role{
+    font-family:var(--mono);
+    color:var(--accent);
+    font-size:14px;
+    margin-top:8px;
+    letter-spacing:.02em;
+  }
+  .seal{
+    width:64px; height:64px;
+    border:2px solid var(--stamp);
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--display);
+    font-weight:700;
+    color:var(--stamp);
+    font-size:18px;
+    transform:rotate(-8deg);
+    flex-shrink:0;
+  }
+  .tb-fields{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    border-top:1px solid var(--line-soft);
+  }
+  .tb-field{
+    padding:14px 18px;
+    border-right:1px solid var(--line-soft);
+  }
+  .tb-field:last-child{ border-right:none; }
+  .tb-field .k{
+    font-family:var(--mono);
+    font-size:10px;
+    text-transform:uppercase;
+    letter-spacing:.1em;
+    color:var(--text-dim);
+    display:block;
+    margin-bottom:5px;
+  }
+  .tb-field .v{ font-size:14px; }
+  .tb-field .v a{ color:var(--text); text-decoration-color:var(--line); }
+  .tb-field .v a:hover{ color:var(--accent); }
+
+  @media (max-width:640px){
+    .tb-main{ grid-template-columns:1fr; }
+    .seal{ display:none; }
+    .tb-fields{ grid-template-columns:1fr 1fr; }
+    .tb-field:nth-child(2){ border-right:none; }
+  }
+
+  /* ---------- profile ---------- */
+  .profile p{ margin:0; color:var(--text); font-size:15.5px; max-width:62ch; }
+
+  /* ---------- legend / skills ---------- */
+  .legend-group{ margin-bottom:22px; }
+  .legend-group:last-child{ margin-bottom:0; }
+  .legend-title{
+    font-family:var(--mono);
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    color:var(--text-dim);
+    margin-bottom:10px;
+  }
+  .chips{ display:flex; flex-wrap:wrap; gap:8px; }
+  .chip{
+    font-family:var(--mono);
+    font-size:12.5px;
+    border:1px solid var(--line-soft);
+    padding:6px 10px;
+    color:var(--text);
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+  }
+  .chip::before{
+    content:"";
+    width:6px; height:6px;
+    background:var(--accent);
+    display:inline-block;
+  }
+
+  /* ---------- revision table ---------- */
+  .rev-table{
+    width:100%;
+    border-collapse:collapse;
+    font-family:var(--mono);
+    font-size:13.5px;
+    margin-top:18px;
+  }
+  .rev-table caption{ text-align:left; }
+  .rev-table thead th{
+    text-align:left;
+    font-size:10.5px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--text-dim);
+    border-bottom:1px solid var(--line);
+    padding:8px 10px;
+    font-weight:500;
+  }
+  .rev-table tbody td{
+    padding:11px 10px;
+    border-bottom:1px solid var(--line-faint);
+    vertical-align:top;
+  }
+  .rev-table tbody tr:hover{ background:var(--panel-alt); }
+  .rev-table .rev-letter{ color:var(--stamp); font-weight:600; }
+  .rev-table a{
+    color:var(--text);
+    text-decoration:none;
+    border-bottom:1px dashed var(--line);
+  }
+  .rev-table a:hover{ color:var(--accent); border-color:var(--accent); }
+  .rev-table .org{ color:var(--text-dim); }
+
+  @media (max-width:640px){
+    .rev-table thead{ display:none; }
+    .rev-table, .rev-table tbody, .rev-table tr, .rev-table td{ display:block; width:100%; }
+    .rev-table tr{ border-bottom:1px solid var(--line-soft); padding:10px 0; }
+    .rev-table td{ border-bottom:none; padding:3px 0; }
+    .rev-table td::before{
+      content:attr(data-label);
+      display:inline-block;
+      width:90px;
+      color:var(--text-dim);
+      font-size:10.5px;
+      text-transform:uppercase;
+      letter-spacing:.06em;
+    }
+  }
+
+  /* ---------- revision detail cards ---------- */
+  .rev-details{ margin-top:40px; display:flex; flex-direction:column; gap:18px; }
+  .rev-card{
+    background:var(--panel);
+    border:1px solid var(--line-soft);
+    border-left:3px solid var(--stamp);
+    padding:22px 26px;
+    scroll-margin-top:24px;
+  }
+  .rev-card-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    flex-wrap:wrap;
+    gap:8px 16px;
+    margin-bottom:6px;
+  }
+  .rev-tag{
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--stamp);
+    letter-spacing:.06em;
+  }
+  .rev-card h3{ font-size:18px; }
+  .rev-meta{
+    font-family:var(--mono);
+    font-size:12.5px;
+    color:var(--text-dim);
+    margin-bottom:14px;
+  }
+  .rev-card ul{ margin:0; padding-left:18px; }
+  .rev-card li{ margin-bottom:6px; font-size:14.5px; }
+  .rev-card li:last-child{ margin-bottom:0; }
+
+  /* ---------- portfolio ---------- */
+  .portfolio-grid{
+    margin-top:18px;
+    display:flex;
+    flex-direction:column;
+    gap:24px;
+  }
+  .app-card{
+    background:var(--panel);
+    border:1px solid var(--line-soft);
+    border-left:3px solid var(--stamp);
+    padding:24px 26px;
+  }
+  .app-card-head{ margin-bottom:6px; }
+  .app-tag{
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--stamp);
+    letter-spacing:.06em;
+  }
+  .app-card h3{
+    font-size:18px;
+    margin-top:6px;
+    color:var(--text);
+  }
+  .app-desc{
+    color:var(--text-dim);
+    font-size:13.5px;
+    margin-top:6px;
+    font-style:italic;
+  }
+  .note-box{
+    border:1px dashed var(--line-soft);
+    padding:14px 18px;
+    margin-bottom:20px;
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--text-dim);
+    line-height:1.6;
+  }
+  .note-box .note-label{
+    color:var(--stamp);
+    letter-spacing:.06em;
+    margin-right:6px;
+  }
+  .shots-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    margin-top:18px;
+  }
+  @media (max-width:480px){ .shots-grid{ grid-template-columns:1fr; } }
+
+  .shot-placeholder{
+    aspect-ratio:16/10;
+    border:1px dashed var(--line-soft);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+  }
+  .shot-placeholder .plus{ width:20px; height:20px; position:relative; }
+  .shot-placeholder .plus::before, .shot-placeholder .plus::after{
+    content:"";
+    position:absolute;
+    background:var(--text-dim);
+  }
+  .shot-placeholder .plus::before{ top:50%; left:0; width:100%; height:1px; transform:translateY(-50%); }
+  .shot-placeholder .plus::after{ left:50%; top:0; width:1px; height:100%; transform:translateX(-50%); }
+  .shot-placeholder .label{
+    font-family:var(--mono);
+    font-size:10.5px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--text-dim);
+  }
+
+  /* once a real screenshot is added, wrap it in <figure class="shot"><img ...></figure> instead */
+  .shot{
+    aspect-ratio:16/10;
+    border:1px solid var(--line-soft);
+    overflow:hidden;
+  }
+  .shot img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+  }
+
+  /* ---------- formation / certs / langues ---------- */
+  .grid-2{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+  }
+  @media (max-width:640px){ .grid-2{ grid-template-columns:1fr; } }
+
+  .grid-formation{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(220px,1fr));
+    gap:18px;
+  }
+
+  .spec-item{
+    border:1px solid var(--line-soft);
+    padding:18px 20px;
+  }
+  .spec-item .period{
+    font-family:var(--mono);
+    font-size:11.5px;
+    color:var(--text-dim);
+    margin-bottom:6px;
+  }
+  .spec-item h3{ font-size:15.5px; font-weight:600; }
+  .spec-item .org{ font-size:13.5px; color:var(--text-dim); margin-top:4px; }
+
+  .cert-row{ display:flex; flex-direction:column; gap:12px; }
+  .cert-badge{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    border:1px solid var(--line-soft);
+    padding:14px 16px;
+  }
+  .cert-badge .mark{
+    width:30px; height:30px;
+    border:1px solid var(--stamp);
+    border-radius:50%;
+    flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    color:var(--stamp);
+    font-size:14px;
+  }
+  .cert-badge .name{ font-size:14px; }
+  .cert-badge .date{ font-family:var(--mono); font-size:11.5px; color:var(--text-dim); margin-top:2px; }
+
+  .tag-row{ display:flex; flex-wrap:wrap; gap:8px; }
+
+  footer.titleblock{ margin-top:60px; }
+  .tb-footer-row{
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:10px;
+    padding:16px 20px;
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--text-dim);
+    letter-spacing:.04em;
+  }
+</style>
 </head>
 <body>
-  <h1>Salut, je suis Mouhamed 👋</h1>
-  <p>Tech Lead & Développeur</p>
+<main class="sheet">
+  <span class="crop-bl"></span><span class="crop-br"></span>
+
+  <header class="titleblock">
+    <div class="tb-main">
+      <div>
+        <h1 class="tb-name">Mouhamed&nbsp;Sylla</h1>
+        <div class="tb-role">Ingénieur Étude &amp; Développement — Tech&nbsp;Lead</div>
+      </div>
+      <div class="seal">MS</div>
+    </div>
+    <div class="tb-fields">
+      <div class="tb-field">
+        <span class="k">Réf. dossier</span>
+        <span class="v">MS — Dakar</span>
+      </div>
+      <div class="tb-field">
+        <span class="k">Expérience</span>
+        <span class="v">8 ans</span>
+      </div>
+      <div class="tb-field">
+        <span class="k">Contact</span>
+        <span class="v"><a href="mailto:metzenden@gmail.com">metzenden@gmail.com</a></span>
+      </div>
+      <div class="tb-field">
+        <span class="k">Téléphone</span>
+        <span class="v"><a href="tel:+221778406506">+221 77 840 65 06</a></span>
+      </div>
+    </div>
+    <div class="tb-fields">
+      <div class="tb-field">
+        <span class="k">Localisation</span>
+        <span class="v">Dakar, Sénégal</span>
+      </div>
+      <div class="tb-field">
+        <span class="k">LinkedIn</span>
+        <span class="v"><a href="https://www.linkedin.com/in/mouhamed-sylla-190b2879" target="_blank" rel="noopener">/mouhamed-sylla</a></span>
+      </div>
+      <div class="tb-field">
+        <span class="k">Formation</span>
+        <span class="v">Master 2, Génie Logiciel</span>
+      </div>
+      <div class="tb-field">
+        <span class="k">Langues</span>
+        <span class="v">Français · Anglais</span>
+      </div>
+    </div>
+  </header>
+
+  <section class="profile">
+    <p class="eyebrow">Profil</p>
+    <div class="panel">
+      <p>Passionné par le code et doté d'une curiosité naturelle, diplômé de l'Institut Supérieur d'Informatique (ISI) en génie logiciel. Avec 8 ans d'expérience, il s'est spécialisé dans le développement back-end avec une bonne maîtrise du front-end. Actuellement Tech Lead, il combine compétences techniques et leadership pour accompagner des équipes et améliorer les processus de développement — notamment en mission de consultance pour des entreprises comme Stellantis, où il a développé une expertise en conception de systèmes informatiques complexes.</p>
+    </div>
+  </section>
+
+  <section class="skills">
+    <p class="eyebrow">Légende — compétences</p>
+    <div class="panel">
+      <div class="legend-group">
+        <div class="legend-title">Leadership &amp; gestion</div>
+        <div class="chips">
+          <span class="chip">Gestion d'équipe</span>
+          <span class="chip">Gestion de projet</span>
+          <span class="chip">Agile</span>
+          <span class="chip">Trello</span>
+        </div>
+      </div>
+      <div class="legend-group">
+        <div class="legend-title">Langages &amp; frameworks</div>
+        <div class="chips">
+          <span class="chip">JavaScript</span>
+          <span class="chip">Python</span>
+          <span class="chip">Java / JEE</span>
+          <span class="chip">PHP</span>
+          <span class="chip">Visual Basic</span>
+          <span class="chip">ReactJS</span>
+          <span class="chip">Express JS</span>
+          <span class="chip">ElectronJS</span>
+          <span class="chip">ASP.NET MVC</span>
+          <span class="chip">Android Studio</span>
+          <span class="chip">HTML / CSS</span>
+          <span class="chip">Bootstrap</span>
+        </div>
+      </div>
+      <div class="legend-group">
+        <div class="legend-title">Bases de données</div>
+        <div class="chips">
+          <span class="chip">PostgreSQL</span>
+          <span class="chip">MongoDB</span>
+          <span class="chip">PhpMyAdmin</span>
+          <span class="chip">Microsoft Access</span>
+        </div>
+      </div>
+      <div class="legend-group">
+        <div class="legend-title">DevOps &amp; outils</div>
+        <div class="chips">
+          <span class="chip">Serveur Linux</span>
+          <span class="chip">Docker</span>
+          <span class="chip">Gitlab</span>
+        </div>
+      </div>
+      <div class="legend-group">
+        <div class="legend-title">Bureautique</div>
+        <div class="chips">
+          <span class="chip">Word</span>
+          <span class="chip">PowerPoint</span>
+          <span class="chip">Excel</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="experience">
+    <p class="eyebrow">Tableau des révisions — expérience professionnelle</p>
+    <table class="rev-table">
+      <thead>
+        <tr><th>Rév.</th><th>Période</th><th>Poste</th><th>Organisation</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td data-label="Rév."><span class="rev-letter">J</span></td>
+          <td data-label="Période">nov. 2023 — présent</td>
+          <td data-label="Poste"><a href="#rev-j">Technical Lead</a></td>
+          <td data-label="Org." class="org">Way2Tech.ai</td>
+        </tr>
+        <tr>
+          <td data-label="Rév."><span class="rev-letter">I</span></td>
+          <td data-label="Période">janv. — nov. 2023</td>
+          <td data-label="Poste"><a href="#rev-i">Ingénieur étude &amp; développement</a></td>
+          <td data-label="Org." class="org">Galima (Stellantis)</td>
+        </tr>
+        <tr>
+          <td data-label="Rév."><span class="rev-letter">H</span></td>
+          <td data-label="Période">févr. — juil. 2022</td>
+          <td data-label="Poste"><a href="#rev-h">Développeur Full Stack</a></td>
+          <td data-label="Org." class="org">INSOFT (Air Sénégal)</td>
+        </tr>
+        <tr>
+          <td data-label="Rév."><span class="rev-letter">G</span></td>
+          <td data-label="Période">juil. 2019 — févr. 2022</td>
+          <td data-label="Poste"><a href="#rev-g">Développeur fullstack</a></td>
+          <td data-label="Org." class="org">Groupe Way2call</td>
+        </tr>
+        <tr>
+          <td data-label="Rév."><span class="rev-letter">F</span></td>
+          <td data-label="Période">mars 2019</td>
+          <td data-label="Poste"><a href="#rev-f">Formateur en C#</a></td>
+          <td data-label="Org." class="org">ISM Digital Campus</td>
+        </tr>
+        <tr>
+          <td data-label="Rév."><span class="rev-letter">E</span></td>
+          <td data-label="Période">août 2018 — janv. 2019</td>
+          <td data-label="Poste"><a href="#rev-e">Développeur fullstack</a></td>
+          <td data-label="Org." class="org">BCEAO</td>
+        </tr>
+        <tr>
+          <td data-label="Rév."><span class="rev-letter">D</span></td>
+          <td data-label="Période">mai — juil. 2018</td>
+          <td data-label="Poste"><a href="#rev-d">Formateur Java &amp; SGBD</a></td>
+          <td data-label="Org." class="org">IMTECH Nelson Mandela</td>
+        </tr>
+        <tr>
+          <td data-label="Rév."><span class="rev-letter">C</span></td>
+          <td data-label="Période">févr. 2018 — avr. 2019</td>
+          <td data-label="Poste"><a href="#rev-c">Développeur freelance</a></td>
+          <td data-label="Org." class="org">2S-Media</td>
+        </tr>
+        <tr>
+          <td data-label="Rév."><span class="rev-letter">B</span></td>
+          <td data-label="Période">janv. — févr. 2018</td>
+          <td data-label="Poste"><a href="#rev-b">Développeur Android</a></td>
+          <td data-label="Org." class="org">Guindy Technology</td>
+        </tr>
+        <tr>
+          <td data-label="Rév."><span class="rev-letter">A</span></td>
+          <td data-label="Période">mai 2017 — janv. 2018</td>
+          <td data-label="Poste"><a href="#rev-a">Développeur Python / Django</a></td>
+          <td data-label="Org." class="org">Groupe Way2call</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="rev-details">
+
+      <article class="rev-card" id="rev-j">
+        <div class="rev-card-head">
+          <h3>Technical Lead</h3>
+          <span class="rev-tag">RÉV. J</span>
+        </div>
+        <div class="rev-meta">Way2Tech.ai, Dakar · nov. 2023 — présent</div>
+        <ul>
+          <li>Diriger une équipe de développeurs pour des projets techniques innovants</li>
+          <li>Coordonner avec les parties prenantes pour définir les objectifs des projets</li>
+          <li>Superviser la conception et l'architecture des solutions logicielles</li>
+          <li>Assurer l'optimisation et la performance des applications livrées</li>
+          <li>Gérer les tests et déploiements des logiciels développés</li>
+          <li>Assurer la veille technologique pour intégrer les dernières innovations au sein de l'équipe</li>
+          <li>Collaborer avec les équipes qualité pour garantir la robustesse et la fiabilité des produits livrés</li>
+        </ul>
+      </article>
+
+      <article class="rev-card" id="rev-i">
+        <div class="rev-card-head">
+          <h3>Ingénieur étude et développement</h3>
+          <span class="rev-tag">RÉV. I</span>
+        </div>
+        <div class="rev-meta">Galima, Région de Dakar · janv. — nov. 2023 · Consultant chez Stellantis</div>
+        <ul>
+          <li>Participer au développement de solutions logicielles sur mesure pour l'industrie</li>
+          <li>Travailler en étroite collaboration avec les équipes internes pour recueillir des informations</li>
+          <li>Proposer des améliorations techniques pour optimiser les performances des logiciels</li>
+          <li>Concevoir et développer des applications pour améliorer les processus internes de production de moteur chez Stellantis</li>
+        </ul>
+      </article>
+
+      <article class="rev-card" id="rev-h">
+        <div class="rev-card-head">
+          <h3>Développeur Full Stack</h3>
+          <span class="rev-tag">RÉV. H</span>
+        </div>
+        <div class="rev-meta">INSOFT, Dakar · févr. — juil. 2022</div>
+        <ul>
+          <li>En mission de consultance chez Air Sénégal : conception d'un ensemble d'outils pour traiter les informations sur les ventes de billets provenant de plusieurs sources, incluant le traitement des données et leur exposition via une API</li>
+          <li>Création d'un plugin WordPress de paiement Mobile Money (Wave)</li>
+        </ul>
+      </article>
+
+      <article class="rev-card" id="rev-g">
+        <div class="rev-card-head">
+          <h3>Développeur fullstack</h3>
+          <span class="rev-tag">RÉV. G</span>
+        </div>
+        <div class="rev-meta">Groupe Way2call, Dakar · juil. 2019 — févr. 2022</div>
+        <ul>
+          <li>Conception et réalisation d'applications internes pour le compte de Way2Call</li>
+          <li>Déploiement de ces applications et gestion de leur haute disponibilité</li>
+        </ul>
+      </article>
+
+      <article class="rev-card" id="rev-f">
+        <div class="rev-card-head">
+          <h3>Formateur en C#</h3>
+          <span class="rev-tag">RÉV. F</span>
+        </div>
+        <div class="rev-meta">ISM École d'ingénieur — Digital Campus, Dakar · mars 2019</div>
+        <ul>
+          <li>Cours de C# pour les étudiants en licence 3</li>
+          <li>Développer des programmes pédagogiques sur mesure pour les étudiants en informatique</li>
+          <li>Utiliser des exemples pratiques pour illustrer les concepts de C#</li>
+          <li>Organiser des ateliers de pratique pour renforcer les compétences des étudiants</li>
+          <li>Évaluer les progrès des étudiants à travers des examens et des projets pratiques</li>
+        </ul>
+      </article>
+
+      <article class="rev-card" id="rev-e">
+        <div class="rev-card-head">
+          <h3>Développeur fullstack</h3>
+          <span class="rev-tag">RÉV. E</span>
+        </div>
+        <div class="rev-meta">BCEAO (compte officiel), Dakar · août 2018 — janv. 2019</div>
+        <ul>
+          <li>Conception et réalisation d'une application de gestion du protocole et de la gestion des accords de siège</li>
+        </ul>
+      </article>
+
+      <article class="rev-card" id="rev-d">
+        <div class="rev-card-head">
+          <h3>Formateur en Java et SGBD</h3>
+          <span class="rev-tag">RÉV. D</span>
+        </div>
+        <div class="rev-meta">IMTECH Nelson Mandela, Dakar · mai — juil. 2018</div>
+        <ul>
+          <li>Former et encadrer des étudiants sur les concepts de Java</li>
+          <li>Développer des programmes de cours adaptés aux besoins des étudiants en SGBD</li>
+          <li>Organiser des ateliers pratiques pour l'application directe des concepts étudiés</li>
+          <li>Assurer le suivi et l'évaluation continue des étudiants pour garantir une compréhension approfondie</li>
+        </ul>
+      </article>
+
+      <article class="rev-card" id="rev-c">
+        <div class="rev-card-head">
+          <h3>Développeur freelance</h3>
+          <span class="rev-tag">RÉV. C</span>
+        </div>
+        <div class="rev-meta">2S-Media, Sénégal · févr. 2018 — avr. 2019</div>
+        <ul>
+          <li>Développement d'applications web pour les clients de 2S-Media</li>
+          <li>Conception de solutions logicielles personnalisées pour divers clients</li>
+          <li>Assurance d'une mise en production optimale des projets logiciels</li>
+          <li>Maintenance des applications pour assurer leur fiabilité et leur sécurité</li>
+        </ul>
+      </article>
+
+      <article class="rev-card" id="rev-b">
+        <div class="rev-card-head">
+          <h3>Développeur Android</h3>
+          <span class="rev-tag">RÉV. B</span>
+        </div>
+        <div class="rev-meta">Guindy Technology, Dakar · janv. — févr. 2018</div>
+        <ul>
+          <li>Mission : développement d'une application mobile pour le compte de Guindy Technology</li>
+        </ul>
+      </article>
+
+      <article class="rev-card" id="rev-a">
+        <div class="rev-card-head">
+          <h3>Développeur Python / Django</h3>
+          <span class="rev-tag">RÉV. A</span>
+        </div>
+        <div class="rev-meta">Groupe Way2call, Dakar · mai 2017 — janv. 2018</div>
+        <ul>
+          <li>Conception et réalisation de la version 2 du système d'information des ressources humaines</li>
+          <li>Développement d'applications web avec Python et Django</li>
+          <li>Optimisation des bases de données pour garantir une haute performance</li>
+        </ul>
+      </article>
+
+    </div>
+  </section>
+
+  <section class="portfolio">
+    <p class="eyebrow">Portfolio — applications réalisées</p>
+    <div class="note-box">
+      <span class="note-label">NOTE —</span>remplacez chaque bloc en pointillés par votre capture d'écran (balise &lt;figure class="shot"&gt;&lt;img src="..."&gt;&lt;/figure&gt;), et le texte en italique par le nom et la description réels de chaque application.
+    </div>
+    <div class="portfolio-grid">
+
+      <article class="app-card">
+        <div class="app-card-head">
+          <span class="app-tag">APP. 01</span>
+          <h3>Nom de l'application 01</h3>
+          <div class="app-desc">Description courte de l'application en une phrase.</div>
+        </div>
+        <div class="shots-grid">
+          <figure class="shot-placeholder"><span class="plus"></span><span class="label">Capture 01</span></figure>
+          <figure class="shot-placeholder"><span class="plus"></span><span class="label">Capture 02</span></figure>
+          <figure class="shot-placeholder"><span class="plus"></span><span class="label">Capture 03</span></figure>
+          <figure class="shot-placeholder"><span class="plus"></span><span class="label">Capture 04</span></figure>
+        </div>
+      </article>
+
+      <article class="app-card">
+        <div class="app-card-head">
+          <span class="app-tag">APP. 02</span>
+          <h3>Nom de l'application 02</h3>
+          <div class="app-desc">Description courte de l'application en une phrase.</div>
+        </div>
+        <div class="shots-grid">
+          <figure class="shot-placeholder"><span class="plus"></span><span class="label">Capture 01</span></figure>
+          <figure class="shot-placeholder"><span class="plus"></span><span class="label">Capture 02</span></figure>
+          <figure class="shot-placeholder"><span class="plus"></span><span class="label">Capture 03</span></figure>
+          <figure class="shot-placeholder"><span class="plus"></span><span class="label">Capture 04</span></figure>
+        </div>
+      </article>
+
+      <article class="app-card">
+        <div class="app-card-head">
+          <span class="app-tag">APP. 03</span>
+          <h3>Nom de l'application 03</h3>
+          <div class="app-desc">Description courte de l'application en une phrase.</div>
+        </div>
+        <div class="shots-grid">
+          <figure class="shot-placeholder"><span class="plus"></span><span class="label">Capture 01</span></figure>
+          <figure class="shot-placeholder"><span class="plus"></span><span class="label">Capture 02</span></figure>
+          <figure class="shot-placeholder"><span class="plus"></span><span class="label">Capture 03</span></figure>
+          <figure class="shot-placeholder"><span class="plus"></span><span class="label">Capture 04</span></figure>
+        </div>
+      </article>
+
+      <article class="app-card">
+        <div class="app-card-head">
+          <span class="app-tag">APP. 04</span>
+          <h3>Nom de l'application 04</h3>
+          <div class="app-desc">Description courte de l'application en une phrase.</div>
+        </div>
+        <div class="shots-grid">
+          <figure class="shot-placeholder"><span class="plus"></span><span class="label">Capture 01</span></figure>
+          <figure class="shot-placeholder"><span class="plus"></span><span class="label">Capture 02</span></figure>
+          <figure class="shot-placeholder"><span class="plus"></span><span class="label">Capture 03</span></figure>
+          <figure class="shot-placeholder"><span class="plus"></span><span class="label">Capture 04</span></figure>
+        </div>
+      </article>
+
+      <article class="app-card">
+        <div class="app-card-head">
+          <span class="app-tag">APP. 05</span>
+          <h3>Nom de l'application 05</h3>
+          <div class="app-desc">Description courte de l'application en une phrase.</div>
+        </div>
+        <div class="shots-grid">
+          <figure class="shot-placeholder"><span class="plus"></span><span class="label">Capture 01</span></figure>
+          <figure class="shot-placeholder"><span class="plus"></span><span class="label">Capture 02</span></figure>
+          <figure class="shot-placeholder"><span class="plus"></span><span class="label">Capture 03</span></figure>
+          <figure class="shot-placeholder"><span class="plus"></span><span class="label">Capture 04</span></figure>
+        </div>
+      </article>
+
+      <article class="app-card">
+        <div class="app-card-head">
+          <span class="app-tag">APP. 06</span>
+          <h3>Nom de l'application 06</h3>
+          <div class="app-desc">Description courte de l'application en une phrase.</div>
+        </div>
+        <div class="shots-grid">
+          <figure class="shot-placeholder"><span class="plus"></span><span class="label">Capture 01</span></figure>
+          <figure class="shot-placeholder"><span class="plus"></span><span class="label">Capture 02</span></figure>
+          <figure class="shot-placeholder"><span class="plus"></span><span class="label">Capture 03</span></figure>
+          <figure class="shot-placeholder"><span class="plus"></span><span class="label">Capture 04</span></figure>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <section class="formation">
+    <p class="eyebrow">Spécifications — formation</p>
+    <div class="grid-formation">
+      <div class="spec-item">
+        <div class="period">janv. 2017 — janv. 2018</div>
+        <h3>Master 2, Génie Logiciel</h3>
+        <div class="org">Institut Supérieur d'Informatique (ISI)</div>
+      </div>
+      <div class="spec-item">
+        <div class="period">janv. 2016 — janv. 2017</div>
+        <h3>Master 1 (M1), Génie Logiciel</h3>
+        <div class="org">Institut Supérieur d'Informatique (ISI)</div>
+      </div>
+      <div class="spec-item">
+        <div class="period">janv. 2013 — janv. 2016</div>
+        <h3>Licence professionnelle, Génie logiciel</h3>
+        <div class="org">Institut Supérieur d'Informatique (ISI)</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="certificats">
+    <p class="eyebrow">Certificats</p>
+    <div class="cert-row">
+      <div class="cert-badge">
+        <span class="mark">✓</span>
+        <div>
+          <div class="name">L'essentiel de Spring Boot</div>
+          <div class="date">janv. 2022</div>
+        </div>
+      </div>
+      <div class="cert-badge">
+        <span class="mark">✓</span>
+        <div>
+          <div class="name">Python : niveau avancé</div>
+          <div class="date">nov. 2021</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="langues-interets">
+    <div class="grid-2">
+      <div>
+        <p class="eyebrow">Langues</p>
+        <div class="tag-row">
+          <span class="chip">Français</span>
+          <span class="chip">Anglais</span>
+        </div>
+      </div>
+      <div>
+        <p class="eyebrow">Centres d'intérêt</p>
+        <div class="tag-row">
+          <span class="chip">Jeux vidéo</span>
+          <span class="chip">Histoire</span>
+          <span class="chip">Musculation</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="titleblock">
+    <div class="tb-footer-row">
+      <span>Mouhamed Sylla — Dossier technique</span>
+      <span>Feuille 1/1</span>
+      <span>Échelle 1:1</span>
+    </div>
+  </footer>
+
+</main>
 </body>
 </html>
