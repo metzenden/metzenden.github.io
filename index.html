@@ -363,6 +363,13 @@
     min-width:0;
     width:100%;
     background:var(--panel-alt);
+    cursor:zoom-in;
+    transition:border-color .2s ease;
+  }
+  .shot:hover,
+  .shot:focus-visible{
+    border-color:var(--line);
+    outline:none;
   }
   .shot img{
     width:100%;
@@ -370,7 +377,58 @@
     max-width:100%;
     object-fit:contain;
     display:block;
+    pointer-events:none;
   }
+
+  .shot-lightbox{
+    border:none;
+    padding:0;
+    margin:0;
+    max-width:none;
+    max-height:none;
+    width:100%;
+    height:100%;
+    background:transparent;
+  }
+  .shot-lightbox::backdrop{
+    background:rgba(15,35,26,.92);
+  }
+  .shot-lightbox[open]{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .shot-lightbox-frame{
+    margin:0;
+    max-width:min(96vw, 1400px);
+    max-height:90vh;
+    border:1px solid var(--line);
+    background:var(--panel-alt);
+    box-shadow:0 24px 64px rgba(0,0,0,.45);
+  }
+  .shot-lightbox-frame img{
+    display:block;
+    max-width:min(96vw, 1400px);
+    max-height:90vh;
+    width:auto;
+    height:auto;
+    object-fit:contain;
+  }
+  .shot-lightbox-close{
+    position:fixed;
+    top:20px;
+    right:20px;
+    width:40px;
+    height:40px;
+    border:1px solid var(--line-soft);
+    background:var(--panel);
+    color:var(--text);
+    font-size:24px;
+    line-height:1;
+    cursor:pointer;
+    font-family:var(--mono);
+  }
+  .shot-lightbox-close:hover{ border-color:var(--line); color:var(--accent); }
 
   /* ---------- formation / certs / langues ---------- */
   .grid-2{
@@ -875,5 +933,53 @@
   </footer>
 
 </main>
+
+<dialog class="shot-lightbox" id="shot-lightbox" aria-label="Capture agrandie">
+  <button type="button" class="shot-lightbox-close" aria-label="Fermer">&times;</button>
+  <figure class="shot-lightbox-frame">
+    <img src="" alt="">
+  </figure>
+</dialog>
+
+<script>
+(function(){
+  var lightbox = document.getElementById('shot-lightbox');
+  if (!lightbox) return;
+
+  var lightboxImg = lightbox.querySelector('img');
+  var closeBtn = lightbox.querySelector('.shot-lightbox-close');
+
+  function openShot(img){
+    lightboxImg.src = img.currentSrc || img.src;
+    lightboxImg.alt = img.alt;
+    lightbox.showModal();
+  }
+
+  document.querySelectorAll('.shot').forEach(function(shot){
+    var img = shot.querySelector('img');
+    if (!img) return;
+
+    shot.setAttribute('tabindex', '0');
+    shot.setAttribute('role', 'button');
+    shot.setAttribute('aria-label', (img.alt || 'Capture') + ' — agrandir');
+
+    shot.addEventListener('click', function(){ openShot(img); });
+    shot.addEventListener('keydown', function(e){
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openShot(img);
+      }
+    });
+  });
+
+  closeBtn.addEventListener('click', function(){ lightbox.close(); });
+  lightbox.addEventListener('click', function(e){
+    if (e.target === lightbox) lightbox.close();
+  });
+  lightbox.addEventListener('close', function(){
+    lightboxImg.removeAttribute('src');
+  });
+})();
+</script>
 </body>
 </html>
